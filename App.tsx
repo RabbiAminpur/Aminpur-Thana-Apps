@@ -118,23 +118,23 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
 };
 
 const Hero: React.FC<{ onExplore: () => void }> = ({ onExplore }) => (
-  <section className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
+  <section className="relative pt-32 pb-16 md:pt-48 md:pb-24 flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
     <div className="absolute inset-0 opacity-20 pointer-events-none">
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
     </div>
     <div className="container mx-auto px-6 text-center z-10">
-      <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-emerald-700/50 border border-emerald-500/30 text-emerald-100 text-sm font-medium backdrop-blur-sm">
+      <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-emerald-700/50 border border-emerald-500/30 text-emerald-100 text-sm font-medium backdrop-blur-sm animate-fadeIn">
         পাবনা জেলার ঐতিহ্যবাহী জনপদ
       </div>
-      <h2 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-2xl leading-tight">
+      <h2 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-2xl leading-tight animate-fadeIn">
         আমিনপুর থানা
       </h2>
-      <p className="text-base md:text-2xl font-light mb-10 max-w-3xl mx-auto opacity-90 leading-relaxed">
+      <p className="text-base md:text-2xl font-light mb-10 max-w-3xl mx-auto opacity-90 leading-relaxed animate-fadeIn">
         পদ্মা ও যমুনার কোল ঘেঁষে গড়ে ওঠা এক আধুনিক প্রশাসনিক ইউনিট। এই ভূখণ্ডের ইতিহাস, ঐতিহ্য ও জীবনযাত্রার পূর্ণাঙ্গ তথ্য এখানে জানুন।
       </p>
       <button 
         onClick={onExplore}
-        className="px-10 py-4 bg-white text-emerald-900 font-bold rounded-full hover:bg-emerald-50 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg active:scale-95"
+        className="px-10 py-4 bg-white text-emerald-900 font-bold rounded-full hover:bg-emerald-50 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg active:scale-95 animate-fadeIn"
       >
         বিস্তারিত তথ্য দেখুন
       </button>
