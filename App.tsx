@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SECTIONS, ThanaSection } from './constants';
+import { SECTIONS, ThanaSection, HOMEPAGE_CATEGORIES, Category } from './constants';
 
 const NavLinks: React.FC<{ 
   onNavigate: (id: string | 'all' | null) => void, 
@@ -25,7 +25,7 @@ const NavLinks: React.FC<{
       >
         একনজরে সব
       </button>
-      {SECTIONS.map((s) => (
+      {SECTIONS.slice(0, 6).map((s) => (
         <button
           key={s.id}
           onClick={() => handleClick(s.id)}
@@ -54,7 +54,6 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent scroll when sidebar is open
   useEffect(() => {
     if (isSidebarOpen) {
       document.body.style.overflow = 'hidden';
@@ -77,12 +76,10 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
             <span className="drop-shadow-sm">আমিনপুর থানা</span>
           </button>
 
-          {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-6">
             <NavLinks onNavigate={onNavigate} activeId={activeId} />
           </nav>
 
-          {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsSidebarOpen(true)}
             className="lg:hidden p-2 text-white hover:bg-emerald-800/50 rounded-lg transition-colors"
@@ -95,38 +92,21 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
         </div>
       </header>
 
-      {/* Responsive Sidebar (Mobile Drawer) */}
       <div className={`fixed inset-0 z-[60] lg:hidden transition-all duration-300 ${isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        {/* Backdrop */}
-        <div 
-          className="absolute inset-0 bg-emerald-950/80 backdrop-blur-sm"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-        
-        {/* Sidebar Panel */}
+        <div className="absolute inset-0 bg-emerald-950/80 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)}></div>
         <div className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-emerald-900 shadow-2xl transition-transform duration-500 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex flex-col h-full p-8">
             <div className="flex justify-between items-center mb-10">
               <h2 className="text-xl font-bold text-white">মেনু</h2>
-              <button 
-                onClick={() => setIsSidebarOpen(false)}
-                className="p-2 text-emerald-200 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors"
-              >
+              <button onClick={() => setIsSidebarOpen(false)} className="p-2 text-emerald-200 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            
             <nav className="flex flex-col space-y-1 overflow-y-auto">
-              <NavLinks 
-                onNavigate={onNavigate} 
-                activeId={activeId} 
-                isMobile 
-                onClose={() => setIsSidebarOpen(false)} 
-              />
+              <NavLinks onNavigate={onNavigate} activeId={activeId} isMobile onClose={() => setIsSidebarOpen(false)} />
             </nav>
-
             <div className="mt-auto pt-8 border-t border-emerald-800/50 text-emerald-300/60 text-xs text-center">
               <p>© {new Date().getFullYear()} আমিনপুর থানা ইনফো</p>
             </div>
@@ -138,20 +118,18 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
 };
 
 const Hero: React.FC<{ onExplore: () => void }> = ({ onExplore }) => (
-  <section className="relative min-h-[100vh] flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
+  <section className="relative min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
     <div className="absolute inset-0 opacity-20 pointer-events-none">
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-400 rounded-full mix-blend-overlay filter blur-3xl animate-pulse"></div>
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-teal-300 rounded-full mix-blend-overlay filter blur-3xl animate-pulse delay-1000"></div>
     </div>
     <div className="container mx-auto px-6 text-center z-10">
       <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-emerald-700/50 border border-emerald-500/30 text-emerald-100 text-sm font-medium backdrop-blur-sm">
         পাবনা জেলার ঐতিহ্যবাহী জনপদ
       </div>
-      <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-2xl leading-tight">
+      <h2 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-2xl leading-tight">
         আমিনপুর থানা
       </h2>
-      <p className="text-lg md:text-2xl font-light mb-10 max-w-3xl mx-auto opacity-90 leading-relaxed">
+      <p className="text-base md:text-2xl font-light mb-10 max-w-3xl mx-auto opacity-90 leading-relaxed">
         পদ্মা ও যমুনার কোল ঘেঁষে গড়ে ওঠা এক আধুনিক প্রশাসনিক ইউনিট। এই ভূখণ্ডের ইতিহাস, ঐতিহ্য ও জীবনযাত্রার পূর্ণাঙ্গ তথ্য এখানে জানুন।
       </p>
       <button 
@@ -160,6 +138,34 @@ const Hero: React.FC<{ onExplore: () => void }> = ({ onExplore }) => (
       >
         বিস্তারিত তথ্য দেখুন
       </button>
+    </div>
+  </section>
+);
+
+const CategoryGrid: React.FC<{ onSelect: (sectionId: string) => void }> = ({ onSelect }) => (
+  <section className="py-12 md:py-20 bg-slate-50">
+    <div className="container mx-auto px-4 md:px-6">
+      <div className="grid grid-cols-2 gap-3 md:gap-8 lg:gap-12 max-w-6xl mx-auto">
+        {HOMEPAGE_CATEGORIES.map((cat) => (
+          <button 
+            key={cat.id}
+            onClick={() => onSelect(cat.sectionId)}
+            className="group relative bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-emerald-50 hover:border-emerald-200 text-left"
+          >
+            <div className="aspect-video w-full overflow-hidden">
+              <img 
+                src={cat.imageUrl} 
+                alt={cat.title}
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity"></div>
+            </div>
+            <div className="p-4 md:p-8">
+              <h3 className="text-lg md:text-3xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors text-center md:text-left">{cat.title}</h3>
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   </section>
 );
@@ -290,7 +296,10 @@ export default function App() {
       <Header onNavigate={handleNavigate} activeId={activeSectionId} />
       
       {!activeSectionId ? (
-        <Hero onExplore={() => handleNavigate('all')} />
+        <>
+          <Hero onExplore={() => handleNavigate('all')} />
+          <CategoryGrid onSelect={handleNavigate} />
+        </>
       ) : (
         <DetailView 
           activeId={activeSectionId} 
