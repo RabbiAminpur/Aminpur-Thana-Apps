@@ -4,33 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আমিনপুর থানা | পাবনা জেলার ঐতিহ্য</title>
-    <!-- SolaimanLipi Font -->
+    <title>ক্লিন স্লেট</title>
     <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'SolaimanLipi', sans-serif;
-            scroll-behavior: smooth;
-        }
-        .section-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .animate-fadeIn {
-            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        /* Selection Color */
-        ::selection {
-            background-color: #10b981;
-            color: white;
+            animation: fadeIn 1s ease-in-out;
         }
     </style>
     <script type="importmap">
@@ -45,9 +31,8 @@
 }
 </script>
 </head>
-<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+<body class="bg-white">
     <div id="root"></div>
-    <!-- এন্ট্রি পয়েন্ট স্ক্রিপ্ট যা অ্যাপটি রান করবে -->
     <script type="module" src="index.tsx"></script>
 </body>
 </html>
