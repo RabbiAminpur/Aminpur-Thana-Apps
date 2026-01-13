@@ -4,19 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ক্লিন স্লেট</title>
+    <title>আমিনপুর থানা - পাবনা</title>
     <link rel="stylesheet" href="https://fonts.maateen.me/solaiman-lipi/font.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'SolaimanLipi', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .animate-fadeIn {
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        /* Hide scrollbar but keep functionality */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
     <script type="importmap">
