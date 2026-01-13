@@ -1,90 +1,91 @@
 
 import React, { useState, useEffect } from 'react';
-import { SECTIONS, ThanaSection, HOMEPAGE_CATEGORIES, Category } from './constants';
+import { HOMEPAGE_CATEGORIES, Category, SubItem, STATIC_PAGES, AMINPUR_GENERAL_INFO, ThanaSection } from './constants';
 
-const NavLinks: React.FC<{ 
-  onNavigate: (id: string | 'all' | null) => void, 
-  activeId: string | 'all' | null,
-  isMobile?: boolean,
-  onClose?: () => void
-}> = ({ onNavigate, activeId, isMobile, onClose }) => {
-  const handleClick = (id: string | 'all' | null) => {
-    onNavigate(id);
-    if (onClose) onClose();
-  };
+type Route = 
+  | { type: 'home' }
+  | { type: 'static'; pageId: string }
+  | { type: 'thana_detail' }
+  | { type: 'category'; category: Category }
+  | { type: 'subitem'; category: Category; item: SubItem };
+
+const Tagline: React.FC<{ isLight: boolean }> = ({ isLight }) => {
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const taglines = ["A SPACE FOR AMINPUR", "KNOW ABOUT AMINPUR"];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <>
-      <button
-        onClick={() => handleClick('all')}
-        className={`transition-all py-2 border-b-2 text-left ${
-          activeId === 'all' 
-            ? 'text-white border-emerald-400 font-bold' 
-            : `border-transparent text-emerald-100/80 hover:text-white`
-        } ${isMobile ? 'text-lg py-4 border-emerald-800/30' : 'text-sm'}`}
-      >
-        একনজরে সব
-      </button>
-      {SECTIONS.slice(0, 6).map((s) => (
-        <button
-          key={s.id}
-          onClick={() => handleClick(s.id)}
-          className={`transition-all py-2 border-b-2 text-left ${
-            activeId === s.id 
-              ? 'text-white border-emerald-400 font-bold' 
-              : `border-transparent text-emerald-100/80 hover:text-white`
-          } ${isMobile ? 'text-lg py-4 border-emerald-800/30' : 'text-sm'}`}
-        >
-          {s.title.split(' ').pop()}
-        </button>
-      ))}
-    </>
+    <p className={`text-[10px] md:text-xs font-bold tracking-wider transition-all duration-700 animate-pulse ${isLight ? 'text-emerald-600' : 'text-emerald-400'}`}>
+      {taglines[taglineIndex]}
+    </p>
   );
 };
 
-const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, activeId: string | 'all' | null }> = ({ onNavigate, activeId }) => {
+const Header: React.FC<{ onNavigate: (route: Route) => void, activeRoute: Route }> = ({ onNavigate, activeRoute }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (isSidebarOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [isSidebarOpen]);
+  const isSolid = isScrolled || activeRoute.type !== 'home';
+
+  const menuItems = [
+    { label: 'প্রথম পাতা', route: { type: 'home' as const } },
+    { label: 'আমাদের সম্পর্কে', route: { type: 'static' as const, pageId: 'about' } },
+    { label: 'ডেভেলপার সম্পর্কে', route: { type: 'static' as const, pageId: 'developer' } },
+    { label: 'যোগাযোগ', route: { type: 'static' as const, pageId: 'contact' } },
+    { label: 'ব্যবহারের শর্তাবলী', route: { type: 'static' as const, pageId: 'terms' } },
+    { label: 'প্রায়শই জিজ্ঞাসিত প্রশ্ন', route: { type: 'static' as const, pageId: 'faq' } },
+    { label: 'এপস সম্পর্কে', route: { type: 'static' as const, pageId: 'app_info' } },
+  ];
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || activeId ? 'bg-emerald-950/95 backdrop-blur-md shadow-xl py-3 border-b border-emerald-800/30' : 'bg-transparent py-6'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isSolid ? 'bg-white/95 backdrop-blur-md shadow-lg py-2 border-b border-sky-100' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <button 
-            onClick={() => onNavigate(null)}
-            className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center group"
-          >
-            <div className="w-8 h-8 bg-emerald-500 rounded-lg mr-3 flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg">
-              <span className="text-emerald-950 text-xs">অ</span>
+          <button onClick={() => onNavigate({ type: 'home' })} className="flex flex-col items-start group">
+            <div className="flex items-center">
+              <div className={`w-8 h-8 rounded-lg mr-3 flex items-center justify-center group-hover:rotate-12 transition-transform shadow-md ${isSolid ? 'bg-sky-600' : 'bg-emerald-500'}`}>
+                <span className={`${isSolid ? 'text-white' : 'text-slate-900'} text-xs font-bold`}>অ</span>
+              </div>
+              <span className={`text-xl md:text-2xl font-bold tracking-tight transition-colors ${isSolid ? 'text-sky-900' : 'text-white'}`}>আমিনপুর থানা</span>
             </div>
-            <span className="drop-shadow-sm">আমিনপুর থানা</span>
+            <div className="ml-11">
+              <Tagline isLight={isSolid} />
+            </div>
           </button>
 
-          <nav className="hidden lg:flex space-x-6">
-            <NavLinks onNavigate={onNavigate} activeId={activeId} />
+          <nav className="hidden lg:flex space-x-2">
+            {menuItems.map((item, idx) => {
+              const isActive = (activeRoute.type === 'home' && item.label === 'প্রথম পাতা') ||
+                              (activeRoute.type === 'static' && (activeRoute as any).pageId === (item.route as any).pageId);
+              return (
+                <button
+                  key={idx}
+                  onClick={() => onNavigate(item.route)}
+                  className={`text-sm px-4 py-1.5 rounded-full transition-all font-medium ${
+                    isActive
+                      ? isSolid ? 'bg-sky-600 text-white shadow-md' : 'bg-white text-slate-900 shadow-md'
+                      : isSolid ? 'text-sky-800 hover:bg-sky-50' : 'text-white/90 hover:bg-white/10'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </nav>
 
-          <button 
-            onClick={() => setIsSidebarOpen(true)}
-            className="lg:hidden p-2 text-white hover:bg-emerald-800/50 rounded-lg transition-colors"
-            aria-label="Open Menu"
-          >
+          <button onClick={() => setIsSidebarOpen(true)} className={`lg:hidden p-2 rounded-lg transition-colors ${isSolid ? 'text-sky-900 hover:bg-sky-50' : 'text-white hover:bg-white/10'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
@@ -92,23 +93,29 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
         </div>
       </header>
 
+      {/* Sidebar for Mobile - Light Mode */}
       <div className={`fixed inset-0 z-[60] lg:hidden transition-all duration-300 ${isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-emerald-950/80 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)}></div>
-        <div className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-emerald-900 shadow-2xl transition-transform duration-500 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-sky-900/40 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)}></div>
+        <div className={`absolute top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-500 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex flex-col h-full p-8">
-            <div className="flex justify-between items-center mb-10">
-              <h2 className="text-xl font-bold text-white">মেনু</h2>
-              <button onClick={() => setIsSidebarOpen(false)} className="p-2 text-emerald-200 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <nav className="flex flex-col space-y-1 overflow-y-auto">
-              <NavLinks onNavigate={onNavigate} activeId={activeId} isMobile onClose={() => setIsSidebarOpen(false)} />
+            <button onClick={() => setIsSidebarOpen(false)} className="self-end p-2 text-sky-900 hover:bg-sky-50 rounded-full transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <nav className="mt-8 flex flex-col space-y-3">
+              {menuItems.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { onNavigate(item.route); setIsSidebarOpen(false); }}
+                  className="text-left text-lg text-sky-900 font-bold py-3 px-5 border border-sky-100 rounded-2xl hover:bg-sky-50 transition-all active:scale-95"
+                >
+                  {item.label}
+                </button>
+              ))}
             </nav>
-            <div className="mt-auto pt-8 border-t border-emerald-800/50 text-emerald-300/60 text-xs text-center">
-              <p>© {new Date().getFullYear()} আমিনপুর থানা ইনফো</p>
+            <div className="mt-auto pt-8 text-center text-xs text-sky-300 font-bold">
+              AMINPUR DIGITAL PORTAL
             </div>
           </div>
         </div>
@@ -117,51 +124,51 @@ const Header: React.FC<{ onNavigate: (id: string | 'all' | null) => void, active
   );
 };
 
-const Hero: React.FC<{ onExplore: () => void }> = ({ onExplore }) => (
-  <section className="relative pt-32 pb-16 md:pt-48 md:pb-24 flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 text-white overflow-hidden">
-    <div className="absolute inset-0 opacity-20 pointer-events-none">
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-    </div>
+const Hero: React.FC<{ onReadMore: () => void }> = ({ onReadMore }) => (
+  <section className="relative pt-32 pb-16 md:pt-48 md:pb-32 flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white overflow-hidden">
     <div className="container mx-auto px-6 text-center z-10">
-      <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-emerald-700/50 border border-emerald-500/30 text-emerald-100 text-sm font-medium backdrop-blur-sm animate-fadeIn">
-        পাবনা জেলার ঐতিহ্যবাহী জনপদ
+      <div className="inline-block px-4 py-1.5 mb-8 rounded-full bg-sky-400/10 border border-sky-400/30 text-sky-400 text-xs md:text-sm font-bold tracking-wide animate-fadeIn">
+        পাবনা জেলার ১১তম থানা
       </div>
-      <h2 className="text-4xl md:text-7xl lg:text-8xl font-bold mb-6 drop-shadow-2xl leading-tight animate-fadeIn">
-        আমিনপুর থানা
-      </h2>
-      <p className="text-base md:text-2xl font-light mb-10 max-w-3xl mx-auto opacity-90 leading-relaxed animate-fadeIn">
-        পদ্মা ও যমুনার কোল ঘেঁষে গড়ে ওঠা এক আধুনিক প্রশাসনিক ইউনিট। এই ভূখণ্ডের ইতিহাস, ঐতিহ্য ও জীবনযাত্রার পূর্ণাঙ্গ তথ্য এখানে জানুন।
-      </p>
+      <h1 className="text-5xl md:text-8xl font-black mb-8 drop-shadow-2xl leading-tight animate-fadeIn">আমিনপুর থানা</h1>
+      <div className="max-w-2xl mx-auto mb-12 animate-fadeIn">
+        <p className="text-lg md:text-2xl font-light leading-relaxed text-slate-100 italic">
+          "যমুনা ও পদ্মা নদীর মোহনায় অবস্থিত একটি উদীয়মান প্রশাসনিক অঞ্চল, যা স্থানীয় জনপদ ও আইন-শৃঙ্খলার এক সুসংহত প্রতিচ্ছবি।"
+        </p>
+      </div>
       <button 
-        onClick={onExplore}
-        className="px-10 py-4 bg-white text-emerald-900 font-bold rounded-full hover:bg-emerald-50 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-lg active:scale-95 animate-fadeIn"
+        onClick={onReadMore}
+        className="inline-flex items-center px-8 py-4 bg-sky-500 text-white font-black rounded-full hover:bg-sky-400 transition-all shadow-[0_10px_40px_-10px_rgba(14,165,233,0.5)] transform hover:-translate-y-1 active:scale-95 text-lg"
       >
-        বিস্তারিত তথ্য দেখুন
+        বিস্তারিত পড়ুন
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
       </button>
     </div>
+    {/* Animated background elements */}
+    <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-transparent via-slate-900/40 to-slate-950/80 pointer-events-none"></div>
   </section>
 );
 
-const CategoryGrid: React.FC<{ onSelect: (sectionId: string) => void }> = ({ onSelect }) => (
-  <section className="py-12 md:py-20 bg-slate-50">
+const CategoryGrid: React.FC<{ onSelect: (cat: Category) => void }> = ({ onSelect }) => (
+  <section className="py-16 md:py-24 bg-white">
     <div className="container mx-auto px-4 md:px-6">
-      <div className="grid grid-cols-2 gap-3 md:gap-8 lg:gap-12 max-w-6xl mx-auto">
+      <div className="grid grid-cols-2 gap-4 md:gap-10 lg:gap-16 max-w-6xl mx-auto">
         {HOMEPAGE_CATEGORIES.map((cat) => (
           <button 
-            key={cat.id}
-            onClick={() => onSelect(cat.sectionId)}
-            className="group relative bg-white rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-emerald-50 hover:border-emerald-200 text-left"
+            key={cat.id} 
+            onClick={() => onSelect(cat)}
+            className="group relative bg-slate-50 rounded-3xl md:rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 hover:border-sky-200"
           >
             <div className="aspect-video w-full overflow-hidden">
-              <img 
-                src={cat.imageUrl} 
-                alt={cat.title}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity"></div>
+              <img src={cat.imageUrl} alt={cat.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
             </div>
-            <div className="p-4 md:p-8">
-              <h3 className="text-lg md:text-3xl font-bold text-slate-900 group-hover:text-emerald-700 transition-colors text-center md:text-left">{cat.title}</h3>
+            <div className="p-5 md:p-10">
+              <h3 className="text-xl md:text-4xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors text-center md:text-left">{cat.title}</h3>
             </div>
           </button>
         ))}
@@ -170,144 +177,178 @@ const CategoryGrid: React.FC<{ onSelect: (sectionId: string) => void }> = ({ onS
   </section>
 );
 
-const SectionDisplay: React.FC<{ section: ThanaSection }> = ({ section }) => (
-  <div className="mb-12 bg-white rounded-3xl shadow-sm border border-emerald-50 p-8 md:p-12 transition-all hover:shadow-lg hover:border-emerald-100 group">
-    <div className="mb-8 flex items-center justify-center flex-col">
-      <h3 className="text-2xl md:text-4xl font-bold text-slate-900 mb-4 group-hover:text-emerald-800 transition-colors text-center">{section.title}</h3>
-      <div className="w-16 h-1 bg-emerald-600 rounded-full group-hover:w-32 transition-all duration-500"></div>
+const SubItemGrid: React.FC<{ category: Category; onSelect: (item: SubItem) => void; onBack: () => void }> = ({ category, onSelect, onBack }) => (
+  <div className="container mx-auto px-4 md:px-6 py-28 md:py-36 min-h-screen">
+    <button onClick={onBack} className="flex items-center text-sky-700 font-bold mb-10 hover:text-sky-900 transition-colors px-6 py-3 bg-sky-50 rounded-full inline-flex shadow-sm border border-sky-100">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+      হোমে ফিরে যান
+    </button>
+    <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-16 border-l-8 border-sky-500 pl-6 leading-tight">{category.title}</h2>
+    <div className="grid grid-cols-2 gap-4 md:gap-12 lg:gap-16">
+      {category.items.map((item) => (
+        <button key={item.id} onClick={() => onSelect(item)} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all border border-slate-100 text-left">
+          <div className="aspect-video w-full overflow-hidden">
+            <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+          </div>
+          <div className="p-6 md:p-10">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-sky-700 leading-tight">{item.title}</h3>
+            <p className="text-slate-600 text-sm md:text-lg line-clamp-3 font-light leading-relaxed">{item.description}</p>
+          </div>
+        </button>
+      ))}
     </div>
-    <p className="text-slate-700 text-lg md:text-xl leading-[1.8] text-justify whitespace-pre-line font-light">
-      {section.content}
-    </p>
   </div>
 );
 
-const DetailView: React.FC<{ activeId: string | 'all', onBack: () => void }> = ({ activeId, onBack }) => {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [activeId]);
+const DetailView: React.FC<{ title: string; content: string; image?: string; onBack: () => void }> = ({ title, content, image, onBack }) => (
+  <div className="container mx-auto px-4 md:px-6 py-28 md:py-36 min-h-screen max-w-4xl">
+    <button onClick={onBack} className="flex items-center text-sky-700 font-bold mb-12 hover:text-sky-900 transition-colors px-6 py-3 bg-sky-50 rounded-full inline-flex shadow-sm border border-sky-100">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+      ফিরে যান
+    </button>
+    {image && (
+      <div className="aspect-video w-full rounded-[3rem] overflow-hidden mb-12 shadow-2xl border-8 border-white">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+      </div>
+    )}
+    <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-10 leading-tight">{title}</h2>
+    <div className="bg-white rounded-[2.5rem] p-8 md:p-16 shadow-xl border border-sky-50">
+      <p className="text-slate-800 text-lg md:text-2xl leading-[1.8] text-justify whitespace-pre-line font-light">
+        {content}
+      </p>
+    </div>
+  </div>
+);
 
-  const displayedSections = activeId === 'all' 
-    ? SECTIONS 
-    : SECTIONS.filter(s => s.id === activeId);
+const Footer: React.FC<{ onNavigate: (route: Route) => void }> = ({ onNavigate }) => {
+  const menuLinks = [
+    { label: 'প্রথম পাতা', route: { type: 'home' as const } },
+    { label: 'আমাদের সম্পর্কে', route: { type: 'static' as const, pageId: 'about' } },
+    { label: 'যোগাযোগ', route: { type: 'static' as const, pageId: 'contact' } },
+    { label: 'ব্যবহারের শর্তাবলী', route: { type: 'static' as const, pageId: 'terms' } },
+    { label: 'এফএকিউ', route: { type: 'static' as const, pageId: 'faq' } },
+  ];
+
+  const externalLinks = [
+    { label: 'পাবনা জেলা পোর্টাল', url: 'http://www.pabna.gov.bd' },
+    { label: 'বাংলাদেশ পুলিশ', url: 'https://www.police.gov.bd' },
+    { label: 'জাতীয় তথ্য বাতায়ন', url: 'https://bangladesh.gov.bd' },
+    { label: 'উইকিপিডিয়া রেফারেন্স', url: 'https://bn.wikipedia.org/wiki/আমিনপুর_থানা' },
+  ];
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-24 md:py-32 min-h-screen">
-      <div className="max-w-4xl mx-auto">
-        <button 
-          onClick={onBack}
-          className="flex items-center text-emerald-700 font-bold mb-12 hover:text-emerald-900 transition-colors group px-4 py-2 bg-emerald-50 rounded-full inline-flex active:scale-95 shadow-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          হোমপেজে ফিরে যান
-        </button>
-
-        {activeId === 'all' && (
-          <div className="text-center mb-16 animate-fadeIn">
-            <h2 className="text-4xl md:text-6xl font-bold text-emerald-900 mb-4 tracking-tight">আমিনপুর একনজরে</h2>
-            <p className="text-slate-500 text-lg">থানার সকল গুরুত্বপূর্ণ তথ্যের সমন্বিত রূপ</p>
+    <footer className="bg-sky-50 text-sky-900 py-20 mt-auto border-t border-sky-100">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-2 gap-12 md:gap-20 mb-16 max-w-4xl mx-auto">
+          {/* Important Menu Section */}
+          <div>
+            <h4 className="text-sky-950 text-lg md:text-2xl font-black mb-8 flex items-center">
+              <span className="w-2 h-6 bg-sky-500 mr-4 rounded-full shadow-sm"></span>
+              গুরুত্বপূর্ণ মেনু
+            </h4>
+            <ul className="space-y-4">
+              {menuLinks.map((link, idx) => (
+                <li key={idx}>
+                  <button 
+                    onClick={() => onNavigate(link.route)}
+                    className="text-sky-800 hover:text-sky-500 transition-all text-sm md:text-lg font-bold flex items-center group text-left"
+                  >
+                    <span className="w-0 group-hover:w-4 overflow-hidden transition-all mr-0 group-hover:mr-2 text-sky-400">›</span>
+                    {link.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
 
-        <div className="space-y-4">
-          {displayedSections.map(section => (
-            <SectionDisplay key={section.id} section={section} />
-          ))}
+          {/* Important Links Section */}
+          <div>
+            <h4 className="text-sky-950 text-lg md:text-2xl font-black mb-8 flex items-center">
+              <span className="w-2 h-6 bg-sky-500 mr-4 rounded-full shadow-sm"></span>
+              গুরুত্বপূর্ণ লিংক
+            </h4>
+            <ul className="space-y-4">
+              {externalLinks.map((link, idx) => (
+                <li key={idx}>
+                  <a 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sky-800 hover:text-sky-500 transition-all text-sm md:text-lg font-bold flex items-center group"
+                  >
+                    <span className="w-0 group-hover:w-4 overflow-hidden transition-all mr-0 group-hover:mr-2 text-sky-400">›</span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         
-        <div className="mt-16 text-center">
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-emerald-600 hover:text-emerald-800 text-sm font-bold flex flex-col items-center justify-center mx-auto transition-all transform hover:-translate-y-1"
-            >
-              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                </svg>
-              </div>
-              উপরে যান
-            </button>
+        <div className="pt-12 border-t border-sky-100 text-center">
+          <p className="text-xs md:text-sm font-bold tracking-widest opacity-40 uppercase text-sky-900">
+            © {new Date().getFullYear()} Aminpur Thana. Built for Pabna with love.
+          </p>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
-const Footer: React.FC = () => (
-  <footer className="bg-emerald-950 text-emerald-100/60 py-20 mt-auto border-t border-emerald-900">
-    <div className="container mx-auto px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 mb-16">
-        <div>
-          <h4 className="text-white text-xl font-bold mb-8 flex items-center">
-            <span className="w-6 h-1 bg-emerald-500 mr-3"></span>
-            আমিনপুর থানা
-          </h4>
-          <p className="text-sm leading-relaxed opacity-80 font-light">
-            এই পোর্টালটি পাবনা জেলার আমিনপুর থানার ইতিহাস ও পরিচিতি বিষয়ক একটি ডিজিটাল নথি। এলাকার ঐতিহ্যকে বিশ্বদরবারে তুলে ধরাই আমাদের লক্ষ্য।
-          </p>
-        </div>
-        <div>
-          <h4 className="text-white text-xl font-bold mb-8 flex items-center">
-            <span className="w-6 h-1 bg-emerald-500 mr-3"></span>
-            উৎস ও কৃতজ্ঞতা
-          </h4>
-          <ul className="text-sm space-y-4 opacity-80 font-light">
-            <li className="flex items-center"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></span>উইকিপিডিয়া বাংলাদেশ</li>
-            <li className="flex items-center"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></span>পাবনা জেলা বাতায়ন</li>
-            <li className="flex items-center"><span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></span>স্থানীয় জনশ্রুতি ও ইতিহাসবিদ</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white text-xl font-bold mb-8 flex items-center">
-            <span className="w-6 h-1 bg-emerald-500 mr-3"></span>
-            সতর্কবার্তা
-          </h4>
-          <p className="text-xs italic leading-loose opacity-70 font-light">
-            তথ্যগুলো কেবল সাধারণ জ্ঞান ও পরিচিতির উদ্দেশ্যে পরিবেশিত। প্রশাসনিক কোনো প্রয়োজনে সরাসরি থানা বা সংশ্লিষ্ট সরকারি দপ্তরে যোগাযোগ করার অনুরোধ করা হলো।
-          </p>
-        </div>
-      </div>
-      <div className="pt-10 border-t border-emerald-900/50 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-light">
-        <p>© {new Date().getFullYear()} আমিনপুর থানা। পাবনা, বাংলাদেশ।</p>
-        <div className="flex space-x-8">
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">গোপনীয়তা নীতি</span>
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">যোগাযোগ</span>
-          <span className="hover:text-emerald-400 cursor-pointer transition-colors">সহায়তা</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-);
-
 export default function App() {
-  const [activeSectionId, setActiveSectionId] = useState<string | 'all' | null>(null);
+  const [route, setRoute] = useState<Route>({ type: 'home' });
 
-  const handleNavigate = (id: string | 'all' | null) => {
-    setActiveSectionId(id);
-    if (!id) {
-       window.scrollTo({ top: 0, behavior: 'smooth' });
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [route]);
+
+  const renderContent = () => {
+    switch (route.type) {
+      case 'home':
+        return (
+          <>
+            <Hero onReadMore={() => setRoute({ type: 'thana_detail' })} />
+            <CategoryGrid onSelect={(cat) => setRoute({ type: 'category', category: cat })} />
+          </>
+        );
+      case 'static':
+        const page = STATIC_PAGES[route.pageId];
+        return <DetailView title={page.title} content={page.content} onBack={() => setRoute({ type: 'home' })} />;
+      case 'thana_detail':
+        return (
+          <DetailView 
+            title={AMINPUR_GENERAL_INFO.title} 
+            content={AMINPUR_GENERAL_INFO.content} 
+            onBack={() => setRoute({ type: 'home' })} 
+          />
+        );
+      case 'category':
+        return (
+          <SubItemGrid 
+            category={route.category} 
+            onSelect={(item) => setRoute({ type: 'subitem', category: route.category, item: item })} 
+            onBack={() => setRoute({ type: 'home' })} 
+          />
+        );
+      case 'subitem':
+        return (
+          <DetailView 
+            title={route.item.title} 
+            content={route.item.longContent} 
+            image={route.item.imageUrl} 
+            onBack={() => setRoute({ type: 'category', category: route.category })} 
+          />
+        );
+      default:
+        return <Hero onReadMore={() => setRoute({ type: 'thana_detail' })} />;
     }
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 font-['SolaimanLipi'] selection:bg-emerald-100 selection:text-emerald-900">
-      <Header onNavigate={handleNavigate} activeId={activeSectionId} />
-      
-      {!activeSectionId ? (
-        <>
-          <Hero onExplore={() => handleNavigate('all')} />
-          <CategoryGrid onSelect={handleNavigate} />
-        </>
-      ) : (
-        <DetailView 
-          activeId={activeSectionId} 
-          onBack={() => handleNavigate(null)} 
-        />
-      )}
-      
-      <Footer />
+    <div className="flex flex-col min-h-screen bg-slate-50 font-['SolaimanLipi'] selection:bg-sky-500 selection:text-white">
+      <Header onNavigate={setRoute} activeRoute={route} />
+      <main className="flex-grow">
+        {renderContent()}
+      </main>
+      <Footer onNavigate={setRoute} />
     </div>
   );
 }
