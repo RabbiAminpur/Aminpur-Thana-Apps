@@ -27,110 +27,166 @@ const getBanglaDate = () => {
 };
 
 const HighSchoolDetail = ({ isDarkMode, onBack }: { isDarkMode: boolean, onBack: () => void }) => (
-  <div className="animate-fadeIn space-y-8">
+  <div className="animate-fadeIn space-y-10 pb-20">
+    {/* Back Button */}
     <button 
       onClick={onBack}
-      className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all mb-4 ${isDarkMode ? 'bg-slate-800 text-indigo-400 hover:bg-slate-700' : 'bg-white text-indigo-600 shadow-sm hover:shadow-md border border-indigo-50'}`}
+      className={`group flex items-center space-x-2 px-6 py-3 rounded-2xl transition-all mb-4 ${isDarkMode ? 'bg-slate-800 text-indigo-400 hover:bg-slate-700' : 'bg-white text-indigo-600 shadow-sm hover:shadow-md border border-indigo-50'}`}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
-      <span className="font-bold text-sm">তালিকায় ফিরুন</span>
+      <span className="font-bold">তালিকায় ফিরুন</span>
     </button>
 
-    <div className="relative group overflow-hidden rounded-3xl shadow-xl">
+    {/* Header Section */}
+    <div className="relative group overflow-hidden rounded-[2.5rem] shadow-2xl">
       <img 
         src="https://upload.wikimedia.org/wikipedia/commons/2/25/%E0%A6%86%E0%A6%AE%E0%A6%BF%E0%A6%A8%E0%A6%AA%E0%A7%81%E0%A6%B0_%E0%A6%86%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%A8_%E0%A6%89%E0%A6%9A%E0%A7%8D%E0%A6%9A_%E0%A6%AC%E0%A6%BF%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A6%AF%E0%A6%BC_-_%E0%A6%AE%E0%A7%80%E0%A6%B0_%E0%A6%B0%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%AC%E0%A6%BF_%E0%A6%B9%E0%A7%8B%E0%A6%B8%E0%A7%87%E0%A6%A8.jpg" 
         alt="আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়" 
-        className="w-full h-64 md:h-96 object-cover"
+        className="w-full h-72 md:h-[500px] object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex items-end p-8 md:p-12">
         <div className="text-white">
-          <h2 className="text-2xl md:text-4xl font-black mb-2">আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়</h2>
-          <p className="text-xs md:text-sm font-medium opacity-80 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <span className="bg-indigo-600 text-[10px] font-black uppercase px-3 py-1 rounded-full mb-4 inline-block tracking-widest">স্থাপিত: স্বনামধন্য প্রতিষ্ঠান</span>
+          <h2 className="text-3xl md:text-5xl font-black mb-3 leading-tight">আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়</h2>
+          <p className="text-sm md:text-base font-medium opacity-70 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            ছবি: মির রাব্বি হোসেন (উইকিমিডিয়া কমন্স)
+            আমিনপুর, বেরা, পাবনা
           </p>
         </div>
       </div>
     </div>
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {/* Quick Info Bar */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
       {[
         { label: 'EIIN নম্বর', value: '125313', icon: '🆔' },
-        { label: 'অবস্থান', value: 'বেরা, পাবনা', icon: '📍' },
-        { label: 'শিক্ষা স্তর', value: 'মাধ্যমিক', icon: '📚' },
-        { label: 'ধরণ', value: 'বেসরকারি (MPO)', icon: '🏛️' }
+        { label: 'শিক্ষা বোর্ড', value: 'রাজশাহী বোর্ড', icon: '🎓' },
+        { label: 'শিক্ষা স্তর', value: '৬ষ্ঠ–১০ম শ্রেণি', icon: '📚' },
+        { label: 'ধরণ', value: 'বেসরকারি (MPO)', icon: '🏛️' },
+        { label: 'পরিবেশ', value: 'সুশৃঙ্খল', icon: '🌱' }
       ].map((info, i) => (
-        <div key={i} className={`p-4 rounded-2xl border transition-colors ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm'}`}>
-          <span className="text-xl mb-1 block">{info.icon}</span>
-          <p className="text-[10px] font-black uppercase opacity-50 tracking-widest">{info.label}</p>
+        <div key={i} className={`p-5 rounded-3xl border transition-all ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-sm hover:shadow-md'}`}>
+          <span className="text-2xl mb-2 block">{info.icon}</span>
+          <p className="text-[10px] font-black uppercase opacity-40 tracking-widest mb-1">{info.label}</p>
           <p className="text-sm font-bold">{info.value}</p>
         </div>
       ))}
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div className="md:col-span-2 space-y-8">
-        <section>
-          <h3 className={`text-xl font-black mb-4 flex items-center ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
-            <span className="mr-3">📘</span> প্রতিষ্ঠান পরিচিতি
-          </h3>
-          <p className="leading-relaxed opacity-80 font-medium">
+    {/* Main Content Sections */}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="lg:col-span-2 space-y-12">
+        
+        {/* Intro */}
+        <section className="animate-fadeIn">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-black">প্রতিষ্ঠান পরিচিতি</h3>
+          </div>
+          <p className="text-lg leading-relaxed opacity-80 font-medium">
             আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয় একটি স্বনামধন্য মাধ্যমিক শিক্ষা প্রতিষ্ঠান। এটি পাবনা জেলার বেরা উপজেলার আমিনপুর এলাকায় অবস্থিত। দীর্ঘদিন ধরে এই বিদ্যালয়টি এলাকার শিক্ষাবিস্তারে গুরুত্বপূর্ণ ভূমিকা পালন করে আসছে।
           </p>
         </section>
 
-        <section>
-          <h3 className={`text-xl font-black mb-4 flex items-center ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
-            <span className="mr-3">🎓</span> শিক্ষা কার্যক্রম
+        {/* Education Activity */}
+        <section className="p-8 rounded-[2rem] border-2 border-dashed border-indigo-500/20">
+          <h3 className={`text-xl font-black mb-6 flex items-center ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+            <span className="mr-3">🎓</span> শিক্ষা কার্যক্রম ও পাঠদান
           </h3>
-          <p className="mb-4 opacity-80 font-medium">এই বিদ্যালয়ে জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুসারে পাঠদান করা হয়। শিক্ষার্থীদের SSC পরীক্ষার জন্য দক্ষ ও অভিজ্ঞ শিক্ষকমণ্ডলী দ্বারা প্রস্তুত করা হয়।</p>
-          <div className="flex flex-wrap gap-2">
-            {['বাংলা', 'ইংরেজি', 'গণিত', 'সাধারণ বিজ্ঞান', 'সামাজিক বিজ্ঞান', 'ধর্ম শিক্ষা', 'ICT'].map(sub => (
-              <span key={sub} className={`px-3 py-1 rounded-full text-xs font-bold ${isDarkMode ? 'bg-indigo-500/20 text-indigo-300' : 'bg-indigo-50 text-indigo-600'}`}>
-                ✓ {sub}
-              </span>
+          <p className="mb-6 opacity-80 font-medium">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুসারে পাঠদান করা হয়। শিক্ষার্থীদের SSC পরীক্ষার জন্য দক্ষ ও অভিজ্ঞ শিক্ষকমণ্ডলী দ্বারা প্রস্তুত করা হয়।</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {['বাংলা', 'ইংরেজি', 'গণিত', 'সাধারণ বিজ্ঞান', 'সামাজিক বিজ্ঞান', 'ICT'].map(sub => (
+              <div key={sub} className={`p-3 rounded-2xl text-center text-xs font-bold ${isDarkMode ? 'bg-indigo-500/10 text-indigo-300' : 'bg-indigo-50 text-indigo-600'}`}>
+                {sub}
+              </div>
             ))}
           </div>
         </section>
 
+        {/* Student Life */}
         <section>
-          <h3 className={`text-xl font-black mb-4 flex items-center ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
-            <span className="mr-3">🧑‍🎓</span> শিক্ষার্থী জীবন ও সুযোগ সুবিধা
+          <h3 className={`text-xl font-black mb-6 flex items-center ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+            <span className="mr-3">🧑‍🎓</span> শিক্ষার্থী জীবন ও সুবিধা
           </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              'নিরাপদ ও সুশৃঙ্খল পরিবেশ', 'ক্রীড়া ও সাংস্কৃতিক কার্যক্রম',
-              'জাতীয় দিবস উদযাপন', 'নৈতিক শিক্ষা ও শৃঙ্খলা চর্চা'
-            ].map(f => (
-              <li key={f} className={`flex items-center text-sm font-bold p-3 rounded-xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
-                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mr-2"></div> {f}
-              </li>
+              { t: 'নিরাপদ পরিবেশ', d: 'সুশৃঙ্খল ও নিরাপদ একাডেমিক ভবন' },
+              { t: 'ক্রীড়া কার্যক্রম', d: 'বার্ষিক ক্রীড়া ও নিয়মিত প্রশিক্ষণ' },
+              { t: 'জাতীয় দিবস', d: 'সাংস্কৃতিক অনুষ্ঠানের মাধ্যমে দিবস পালন' },
+              { t: 'নৈতিক শিক্ষা', d: 'আদর্শ নাগরিক গড়ে তুলতে বিশেষ সেশন' }
+            ].map((item, idx) => (
+              <div key={idx} className={`p-5 rounded-3xl ${isDarkMode ? 'bg-slate-800' : 'bg-slate-100'}`}>
+                <h4 className="font-black text-sm mb-1">{item.t}</h4>
+                <p className="text-xs opacity-60">{item.d}</p>
+              </div>
             ))}
-          </ul>
+          </div>
+        </section>
+
+        {/* Role in Society */}
+        <section className={`p-8 rounded-[2.5rem] ${isDarkMode ? 'bg-indigo-900/20' : 'bg-indigo-600 text-white'}`}>
+          <h3 className="text-xl font-black mb-4">🌱 সমাজে বিদ্যালয়ের ভূমিকা</h3>
+          <p className="leading-relaxed font-medium opacity-90">
+            আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয় শুধু একটি শিক্ষা প্রতিষ্ঠান নয়, এটি এলাকার সামাজিক উন্নয়নের একটি গুরুত্বপূর্ণ কেন্দ্র। এখান থেকে শিক্ষিত হয়ে বহু শিক্ষার্থী আজ বিভিন্ন সরকারি-বেসরকারি প্রতিষ্ঠানে কর্মরত। গ্রামীণ পরিবেশে মানসম্মত শিক্ষা বিস্তারে এটি একটি অনন্য উদাহরণ।
+          </p>
         </section>
       </div>
 
+      {/* Sidebar Content */}
       <div className="space-y-6">
-        <div className={`p-6 rounded-3xl border ${isDarkMode ? 'bg-indigo-900/10 border-indigo-500/20' : 'bg-indigo-50 border-indigo-100'}`}>
-          <h4 className="font-black text-indigo-600 dark:text-indigo-400 mb-4 uppercase tracking-tighter">প্রশাসন ও সমন্বয়</h4>
-          <ul className="space-y-4 text-sm font-medium">
-            <li className="flex justify-between items-center">
-              <span>শিক্ষক সংখ্যা</span>
-              <span className="font-black">পর্যাপ্ত</span>
+        {/* Administration Card */}
+        <div className={`p-8 rounded-[2rem] border ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-100 shadow-xl shadow-slate-200/50'}`}>
+          <h4 className="font-black text-indigo-600 dark:text-indigo-400 mb-6 uppercase tracking-widest text-xs">শিক্ষক ও প্রশাসন</h4>
+          <ul className="space-y-6">
+            <li className="flex items-start space-x-4">
+              <div className="w-2 h-2 rounded-full bg-green-500 mt-1.5 shrink-0"></div>
+              <div>
+                <p className="text-sm font-bold">নিমিত ক্লাস মনিটরিং</p>
+                <p className="text-[10px] opacity-50 uppercase font-bold tracking-tighter">সিস্টেম্যাটিক প্রসেস</p>
+              </div>
             </li>
-            <li className="flex justify-between items-center">
-              <span>ক্লাস মনিটরিং</span>
-              <span className="font-black text-green-500">নিয়মিত</span>
+            <li className="flex items-start space-x-4">
+              <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0"></div>
+              <div>
+                <p className="text-sm font-bold">শিক্ষার্থী-অভিভাবক সমন্বয়</p>
+                <p className="text-[10px] opacity-50 uppercase font-bold tracking-tighter">নিয়মিত মতবিনিময়</p>
+              </div>
             </li>
-            <li className="flex justify-between items-center">
-              <span>অভিভাবক সমন্বয়</span>
-              <span className="font-black">বার্ষিক</span>
+            <li className="flex items-start space-x-4">
+              <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 shrink-0"></div>
+              <div>
+                <p className="text-sm font-bold">বার্ষিক মূল্যায়ন</p>
+                <p className="text-[10px] opacity-50 uppercase font-bold tracking-tighter">ফলাফল ভিত্তিক পর্যবেক্ষণ</p>
+              </div>
             </li>
           </ul>
+        </div>
+
+        {/* Activities Card */}
+        <div className={`p-8 rounded-[2rem] ${isDarkMode ? 'bg-indigo-500/10 text-indigo-300' : 'bg-indigo-50 text-indigo-700'}`}>
+          <h4 className="font-black mb-4 text-xs uppercase tracking-widest">সহ-শিক্ষাক্রমিক কার্যক্রম</h4>
+          <ul className="space-y-3 text-xs font-bold">
+            <li>• বার্ষিক ক্রীড়া প্রতিযোগিতা</li>
+            <li>• সাংস্কৃতিক অনুষ্ঠান</li>
+            <li>• পুরস্কার বিতরণী</li>
+            <li>• জাতীয় দিবস পালন</li>
+          </ul>
+        </div>
+
+        {/* Source Footer */}
+        <div className="p-6 text-center opacity-40">
+          <p className="text-[10px] font-bold italic leading-relaxed">
+            © তথ্যসূত্র: Wikipedia, শিক্ষা বোর্ড ও স্থানীয় তথ্যভাণ্ডার
+          </p>
         </div>
       </div>
     </div>
@@ -140,19 +196,32 @@ const HighSchoolDetail = ({ isDarkMode, onBack }: { isDarkMode: boolean, onBack:
 const InstitutionCard = ({ isDarkMode, onClick }: { isDarkMode: boolean, onClick: () => void }) => (
   <div 
     onClick={onClick}
-    className={`group cursor-pointer rounded-3xl overflow-hidden border transition-all duration-500 ${isDarkMode ? 'bg-slate-800 border-slate-700 hover:border-indigo-500' : 'bg-white border-slate-100 shadow-sm hover:shadow-xl'}`}
+    className={`group cursor-pointer rounded-[2rem] overflow-hidden border transition-all duration-500 ${isDarkMode ? 'bg-slate-800 border-slate-700 hover:border-indigo-500' : 'bg-white border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2'}`}
   >
-    {/* 16:8 Aspect Ratio Container (padding-bottom: 50%) */}
+    {/* 16:8 Aspect Ratio (padding-bottom: 50%) */}
     <div className="relative w-full pb-[50%] overflow-hidden">
       <img 
         src="https://upload.wikimedia.org/wikipedia/commons/2/25/%E0%A6%86%E0%A6%AE%E0%A6%BF%E0%A6%A8%E0%A6%AA%E0%A7%81%E0%A6%B0_%E0%A6%86%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%A8_%E0%A6%89%E0%A6%9A%E0%A7%8D%E0%A6%9A_%E0%A6%AC%E0%A6%BF%E0%A6%A6%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A6%AF%E0%A6%BC_-_%E0%A6%AE%E0%A7%80%E0%A6%B0_%E0%A6%B0%E0%A6%BE%E0%A6%AC%E0%A7%8D%E0%A6%AC%E0%A6%BF_%E0%A6%B9%E0%A7%8B%E0%A6%B8%E0%A7%87%E0%A6%A8.jpg" 
-        alt="School"
+        alt="আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-      <div className="absolute bottom-4 left-4 right-4">
-        <h4 className="text-white font-black text-lg md:text-xl drop-shadow-md">আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়</h4>
-        <p className="text-white/70 text-[10px] font-bold uppercase tracking-wider">মাধ্যমিক বিদ্যালয় • পাবনা</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+      <div className="absolute bottom-6 left-6 right-6">
+        <span className="bg-indigo-600 text-[9px] text-white font-black uppercase px-2 py-0.5 rounded-full mb-2 inline-block tracking-tighter">মাধ্যমিক স্কুল</span>
+        <h4 className="text-white font-black text-xl md:text-2xl drop-shadow-lg leading-tight">আমিনপুর আয়েন উদ্দিন উচ্চ বিদ্যালয়</h4>
+        <div className="flex items-center mt-2 text-white/60 text-[10px] font-bold uppercase tracking-widest">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+          আমিনপুর, পাবনা
+        </div>
+      </div>
+      
+      {/* Visual Overlay on Hover */}
+      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="bg-white/20 backdrop-blur-md p-2 rounded-full text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
       </div>
     </div>
   </div>
@@ -178,7 +247,7 @@ export default function App() {
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
-  // Filter logic: In "সব" category or "হাইস্কুল" category, we show the Ayen Uddin School
+  // Filter logic: In "সব" category or "হাইস্কুল" category
   const shouldShowAyenUddin = activeCategory === 'সব' || activeCategory === 'হাইস্কুল';
 
   return (
@@ -212,35 +281,35 @@ export default function App() {
       </header>
 
       {/* Hero Info Card */}
-      <section className="container mx-auto px-6 mt-6">
-        <div className={`p-4 rounded-2xl shadow-sm border transition-all duration-500 flex items-center justify-between ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-indigo-50'} animate-fadeIn`}>
-          <div className="flex items-center space-x-4">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl animate-pulse ${isDarkMode ? 'bg-indigo-900/50' : 'bg-indigo-50 text-indigo-600'}`}>🗓️</div>
-            <div>
-              <h2 className={`text-sm font-bold ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{banglaInfo.day}</h2>
-              <p className="text-xs font-medium opacity-70">{banglaInfo.date}</p>
+      {!selectedInstitution && (
+        <section className="container mx-auto px-6 mt-6">
+          <div className={`p-4 rounded-3xl shadow-sm border transition-all duration-500 flex items-center justify-between ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-indigo-50'} animate-fadeIn`}>
+            <div className="flex items-center space-x-4">
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl animate-pulse ${isDarkMode ? 'bg-indigo-900/50' : 'bg-indigo-50 text-indigo-600'}`}>🗓️</div>
+              <div>
+                <h2 className={`text-sm font-bold ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{banglaInfo.day}</h2>
+                <p className="text-xs font-medium opacity-70">{banglaInfo.date}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-indigo-500/20 text-indigo-300' : 'bg-indigo-600 text-white'}`}>
+                ঋতু: {banglaInfo.season}
+              </span>
             </div>
           </div>
-          <div className="text-right">
-            <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-indigo-500/20 text-indigo-300' : 'bg-indigo-600 text-white'}`}>
-              ঋতু: {banglaInfo.season}
-            </span>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Main Content Area */}
-      <main className="flex-grow container mx-auto px-6 py-10">
+      <main className={`flex-grow container mx-auto px-6 ${selectedInstitution ? 'py-6' : 'py-10'}`}>
         
-        {/* Education Section Title */}
-        <div className="flex items-center space-x-3 mb-6">
-          <div className={`w-2 h-8 rounded-full ${isDarkMode ? 'bg-indigo-500' : 'bg-indigo-600'}`}></div>
-          <h3 className="text-2xl font-black tracking-tight">শিক্ষা প্রতিষ্ঠান সমূহ</h3>
-        </div>
-
-        {/* List View logic */}
         {!selectedInstitution ? (
           <>
+            <div className="flex items-center space-x-3 mb-6">
+              <div className={`w-2 h-8 rounded-full ${isDarkMode ? 'bg-indigo-500' : 'bg-indigo-600'}`}></div>
+              <h3 className="text-2xl font-black tracking-tight">শিক্ষা প্রতিষ্ঠান সমূহ</h3>
+            </div>
+
             {/* Horizontal Sub-Category Navigation */}
             <div className="relative mb-10">
               <div className="overflow-x-auto scrollbar-hide pb-4 -mx-2 px-2">
@@ -275,7 +344,6 @@ export default function App() {
             </div>
           </>
         ) : (
-          /* Detail View */
           <div className="animate-fadeIn">
             {selectedInstitution === 'ayenuddin' && (
               <HighSchoolDetail isDarkMode={isDarkMode} onBack={() => setSelectedInstitution(null)} />
